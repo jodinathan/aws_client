@@ -10,5 +10,5 @@ environment:
 
 dependencies:
   crypto: ^2.0.1
-  http_client: ^0.5.0
+  http_client: ^1.0.3
   xml: ^3.0.0
