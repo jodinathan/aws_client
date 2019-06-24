@@ -6,7 +6,6 @@ import 'dart:async';
 
 import 'src/request.dart';
 import 'src/credentials.dart';
-export 'src/credentials.dart';
 
 import 'package:http_client/http_client.dart' as http;
 import 'package:xml/xml.dart';

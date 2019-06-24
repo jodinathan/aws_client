@@ -162,7 +162,7 @@ class AwsRequestBuilder {
     }
     body ??= const [];
     headers.putIfAbsent(
-        'X-Amz-Date',
+        'x-amz-date',
         () =>
             new DateTime.now()
                 .toUtc()
@@ -180,32 +180,29 @@ class AwsRequestBuilder {
     List<String> queryKeys = uri.queryParameters.keys.toList()..sort();
     String canonicalQuery = queryKeys
         .map((s) =>
-            '${_queryComponent(s)}=${_queryComponent(uri.queryParameters[s])}')
+    '${_queryComponent(s)}=${_queryComponent(uri.queryParameters[s])}')
         .join('&');
     List<String> canonicalHeaders = headers.keys
         .map((key) => '${key.toLowerCase()}:${headers[key].trim()}')
         .toList()
-          ..sort();
+      ..sort();
     String signedHeaders =
-        (headers.keys.toList()..sort()).map((s) => s.toLowerCase()).join(';');
+    (headers.keys.toList()..sort()).map((s) => s.toLowerCase()).join(';');
 
     String payloadHash =
-        headers['X-Amz-Content-Sha256'] ?? sha256.convert(body).toString();
+        headers['x-amz-content-sha256'] ?? sha256.convert(body).toString();
 
     String canonical = ([
       method.toUpperCase(),
       Uri.encodeFull(uri.path),
       canonicalQuery,
-    ]
-          ..addAll(canonicalHeaders)
-          ..addAll([
-            '',
-            signedHeaders,
-            payloadHash,
-          ]))
-        .join('\n');
+      ...canonicalHeaders,
+      '',
+      signedHeaders,
+      payloadHash,
+    ]).join('\n');
 
-    String date = headers['X-Amz-Date'];
+    String date = headers['x-amz-date'];
     List<String> credentialList = [
       date.substring(0, 8),
       region,
@@ -225,9 +222,9 @@ class AwsRequestBuilder {
       return hmac.convert(utf8.encode(s)).bytes;
     });
     String signature =
-        new Hmac(sha256, signingKey).convert(utf8.encode(toSign)).toString();
+    new Hmac(sha256, signingKey).convert(utf8.encode(toSign)).toString();
     if (credentials.sessionToken != null) {
-      headers['X-Amz-Security-Token'] = credentials.sessionToken;
+      headers['x-amz-security-token'] = credentials.sessionToken;
     }
 
     String auth = '$_aws4HmacSha256 '

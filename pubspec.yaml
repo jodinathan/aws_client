@@ -6,9 +6,9 @@ author: Istvan Soos <istvan.soos@agilord.com>
 homepage: https://github.com/agilord/aws_client
 
 environment:
-  sdk: '>=2.0.0 <3.0.0'
+  sdk: '>=2.3.0 <3.0.0'
 
 dependencies:
   crypto: ^2.0.1
-  http_client: ^0.5.0
+  http_client: ^1.0.3
   xml: ^3.0.0
